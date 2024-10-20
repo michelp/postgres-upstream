@@ -546,7 +546,7 @@ plpgsql_exec_function(PLpgSQL_function *func, FunctionCallInfo fcinfo,
 					 * it to R/W if the variable gets modified, but that may
 					 * very well never happen.)
 					 */
-					if (!var->isnull && var->datatype->typisarray)
+					if (!var->isnull)
 					{
 						if (VARATT_IS_EXTERNAL_EXPANDED_RW(DatumGetPointer(var->value)))
 						{
@@ -561,7 +561,7 @@ plpgsql_exec_function(PLpgSQL_function *func, FunctionCallInfo fcinfo,
 						{
 							/* R/O pointer, keep it as-is until assigned to */
 						}
-						else
+						else if (var->datatype->typisarray)
 						{
 							/* flat array, so force to expanded form */
 							assign_simple_var(&estate, var,
