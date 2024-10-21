@@ -561,7 +561,7 @@ plpgsql_exec_function(PLpgSQL_function *func, FunctionCallInfo fcinfo,
 						{
 							/* R/O pointer, keep it as-is until assigned to */
 						}
-						else
+						else if (var->datatype->typisarray)
 						{
 							/* flat array, so force to expanded form */
 							assign_simple_var(&estate, var,
